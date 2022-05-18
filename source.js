@@ -48,13 +48,21 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function game() {
+  let round = 0;
   let cCounter = 0;
   let pCounter = 0;
 
   for (let i = 0; i < 5; i++) {
-    if (playRound() == "comp") {
+    let p = prompt(`Round ${++round}!
+    What will you play this time?`, "Rock, Paper or Scissors?");
+    console.log(p);
+    let c = computerPlay();
+
+    let winner = playRound(p,c);
+
+    if (winner == "comp") {
       cCounter++;
-    } else if (playRound() == "player") {
+    } else if (winner == "player") {
       pCounter++;
     }
   }
