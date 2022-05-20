@@ -1,21 +1,7 @@
 // Initialise arrays for play comparisons
-const choices = [
-  "rock",
-  "paper",
-  "scissors"
-]
-
-const superiorChoices = [
-  "paper",
-  "scissors",
-  "rock"
-]
-
-const inferiorChoices = [
-  "scissors",
-  "rock",
-  "paper"
-]
+const choices = ["rock", "paper", "scissors"];
+const superiorChoices = ["paper", "scissors", "rock"];
+const inferiorChoices = ["scissors", "rock", "paper"];
 
 // Create a number to randomly select the index of 'choices' array 
 function getRandomInt(min, max) {
@@ -27,56 +13,60 @@ function getRandomInt(min, max) {
 // Randomise computer's play
 function computerPlay() {
   let x = getRandomInt(0,2);
-  let cSelect = choices[x];
-  return cSelect;
+  let choice = choices[x];
+  return choice;
 }
 
-function playRound(playerSelection, computerSelection) {
-  // Deal with null inputs
-  if( playerSelection == undefined) return console.log("Acceptable inputs are rock, paper or scissors");
-  
-  // Canonicalise user inputs
-  let pSelect = playerSelection.toLowerCase();
-  let cSelect = computerSelection.toLowerCase();
+  // Initialise counters
+  let round = 0;
+  let cCounter = 0;
+  let pCounter = 0;
 
-  // Deal with invalid inputs
-  if (!choices.includes(pSelect)) return console.log("Acceptable inputs are rock, paper or scissors")
+function playRound(event) {
+  let pSelect = event.path[0].classList[0];
+  let cSelect = computerPlay();
+
+  // Insert played-move text
+  let newNode = document.createElement("div");
+  newNode.textContent = `Strong move, you played ${pSelect}!`;
+  newNode.classList = "testing display";
+  let parentNode = document.querySelector("body");
+  let refNode = document.querySelector(".testing.display");
+  parentNode.replaceChild(newNode, refNode);
 
   // Check for equality, win & loss
   if (pSelect == cSelect) {
     return "draw";
   }  else if (superiorChoices.indexOf(pSelect) == choices.indexOf(cSelect)) {
       console.log(`You win! ${pSelect} beats ${cSelect}`);
-      return "player";
+      pCounter++;
   } else if (inferiorChoices.indexOf(pSelect) == choices.indexOf(cSelect)) {
       console.log(`You lose! ${cSelect} beats ${pSelect}`);
-      return "comp";
-    }
-}
-
-function game() {
-  // Initialise counters
-  let round = 0;
-  let cCounter = 0;
-  let pCounter = 0;
-
-  for (let i = 0; i < 5; i++) {
-    let c = computerPlay();
-    let p = prompt(`Round ${++round}!
-    What will you play this time?`, "Rock, Paper or Scissors?");
-    console.log(p);
-
-    // The winner is returned as a string
-    let winner = playRound(p,c);
-
-    if (winner == "comp") {
       cCounter++;
-    } else if (winner == "player") {
-      pCounter++;
     }
-  }
+  round++;
 
-  // log the winner
-  if (cCounter > pCounter) console.log(`The computer wins with a score of ${cCounter} to ${pCounter}!`);
-  if (cCounter < pCounter) console.log(`The player wins with a score of ${pCounter} to ${cCounter}!`);
+  // Insert updated results to user;
+  const result = document.querySelector(".results");
+  const lastItem = document.querySelector("div.results > div");
+  const div = document.createElement("div");
+  div.className = "epic-score-card";
+  div.textContent = `Player: ${pCounter}, Computer: ${cCounter}`;
+  result.replaceChild(div, lastItem);
+
+  // If player reaches limit display on page: score reached
+  if(pCounter == 5) winner = "player";
+  if(cCounter == 5) winner = "computer";
+  if(pCounter == 5 || cCounter == 5) {
+    let newNode2 = document.createElement("div");
+    newNode2.textContent = `${winner} is our winner this time!`
+    let newNode2Parent = document.querySelector("div.results");
+    newNode2Parent.append(newNode2);
+
+    // Toggle all buttons to remove their classes
+    buttons.forEach(button => button.removeEventListener("click", playRound));
+  }
 }
+
+const buttons = document.querySelectorAll("button");
+buttons.forEach(button => button.addEventListener("click", playRound));
