@@ -33,19 +33,21 @@ function computerPlay() {
 
 function playRound(playerSelection, computerSelection) {
   // Deal with null inputs
-  if( playerSelection == undefined) return console.log("Acceptable inputs are rock, paper or scissors");
+  if( playerSelection == undefined) 
+      return console.log("Acceptable inputs are rock, paper or scissors");
   
   // Canonicalise user inputs
   let pSelect = playerSelection.toLowerCase();
   let cSelect = computerSelection.toLowerCase();
 
   // Deal with invalid inputs
-  if (!choices.includes(pSelect)) return console.log("Acceptable inputs are rock, paper or scissors")
+  if (!choices.includes(pSelect)) 
+      return console.log("Acceptable inputs are rock, paper or scissors")
 
   // Check for equality, win & loss
   if (pSelect == cSelect) {
     return "draw";
-  }  else if (superiorChoices.indexOf(pSelect) == choices.indexOf(cSelect)) {
+  } else if (superiorChoices.indexOf(pSelect) == choices.indexOf(cSelect)) {
       console.log(`You win! ${pSelect} beats ${cSelect}`);
       return "player";
   } else if (inferiorChoices.indexOf(pSelect) == choices.indexOf(cSelect)) {
@@ -77,6 +79,8 @@ function game() {
   }
 
   // log the winner
-  if (cCounter > pCounter) console.log(`The computer wins with a score of ${cCounter} to ${pCounter}!`);
-  if (cCounter < pCounter) console.log(`The player wins with a score of ${pCounter} to ${cCounter}!`);
+  if (cCounter > pCounter) 
+      console.log(`The computer wins with a score of ${cCounter} to ${pCounter}!`);
+  if (cCounter < pCounter) 
+      console.log(`The player wins with a score of ${pCounter} to ${cCounter}!`);
 }
